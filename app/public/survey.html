@@ -38,7 +38,7 @@
       <hr />
       <h3 class="font-weight-bold">Question 1</h3>
       <h4>Your mind is always buzzing with unexplored ideas and plans.</h4>
-      <select data-placeholder="" class="chosen-select" id="q1">
+      <select class="question" id="q1">
         <option value=""></option>
         <option value="1">1 (Strongly Disagree)</option>
         <option value="2">2</option>
@@ -53,7 +53,7 @@
         Generally speaking, you rely more on your experience than your
         imagination.
       </h4>
-      <select data-placeholder="" class="chosen-select" id="q2">
+      <select class="question" id="q2">
         <option value=""></option>
         <option value="1">1 (Strongly Disagree)</option>
         <option value="2">2</option>
@@ -68,7 +68,7 @@
         You find it easy to stay relaxed and focused even when there is some
         pressure.
       </h4>
-      <select data-placeholder="" class="chosen-select" id="q3">
+      <select class="question" id="q3">
         <option value=""></option>
         <option value="1">1 (Strongly Disagree)</option>
         <option value="2">2</option>
@@ -80,7 +80,7 @@
       <br />
       <h3 class="font-weight-bold">Question 4</h3>
       <h4>You rarely do something just out of sheer curiosity.</h4>
-      <select data-placeholder="" class="chosen-select" id="q4">
+      <select class="question" id="q4">
         <option value=""></option>
         <option value="1">1 (Strongly Disagree)</option>
         <option value="2">2</option>
@@ -92,7 +92,7 @@
       <br />
       <h3 class="font-weight-bold">Question 5</h3>
       <h4>People can rarely upset you.</h4>
-      <select data-placeholder="" class="chosen-select" id="q5">
+      <select class="question" id="q5">
         <option value=""></option>
         <option value="1">1 (Strongly Disagree)</option>
         <option value="2">2</option>
@@ -106,7 +106,7 @@
       <h4>
         It is often difficult for you to relate to other people’s feelings.
       </h4>
-      <select data-placeholder="" class="chosen-select" id="q6">
+      <select class="question" id="q6">
         <option value=""></option>
         <option value="1">1 (Strongly Disagree)</option>
         <option value="2">2</option>
@@ -121,7 +121,7 @@
         In a discussion, truth should be more important than people’s
         sensitivities.
       </h4>
-      <select data-placeholder="" class="chosen-select" id="q7">
+      <select class="question" id="q7">
         <option value=""></option>
         <option value="1">1 (Strongly Disagree)</option>
         <option value="2">2</option>
@@ -133,7 +133,7 @@
       <br />
       <h3 class="font-weight-bold">Question 8</h3>
       <h4>You rarely get carried away by fantasies and ideas.</h4>
-      <select data-placeholder="" class="chosen-select" id="q8">
+      <select class="question" id="q8">
         <option value=""></option>
         <option value="1">1 (Strongly Disagree)</option>
         <option value="2">2</option>
@@ -148,7 +148,7 @@
         You think that everyone’s views should be respected regardless of
         whether they are supported by facts or not.
       </h4>
-      <select data-placeholder="" class="chosen-select" id="q9">
+      <select class="question" id="q9">
         <option value=""></option>
         <option value="1">1 (Strongly Disagree)</option>
         <option value="2">2</option>
@@ -162,7 +162,7 @@
       <h4>
         You feel more energetic after spending time with a group of people.
       </h4>
-      <select data-placeholder="" class="chosen-select" id="q10">
+      <select class="question" id="q10">
         <option value=""></option>
         <option value="1">1 (Strongly Disagree)</option>
         <option value="2">2</option>
@@ -191,6 +191,23 @@
       </div>
     </footer>
 
+    <div id="resultsModal" class="modal fade" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h2 class="modal-title font-weight-bold">Best Match</h2>
+            <button type="button" class="close" data-dismiss="modal">
+              &times;
+            </button>
+          </div>
+          <div class="modal-body">
+            <h2 id="matchName"></h2>
+            <img class="img-fluid" src="#" alt="" id="matchImage" />
+          </div>
+        </div>
+      </div>
+    </div>
+
     <script type="text/javascript">
       $("#submit").on("click", function() {
         function validateForm() {
@@ -201,7 +218,7 @@
             }
           });
 
-          $(".chosen-select").each(function() {
+          $(".question").each(function() {
             if ($(this).val() === "") {
               isValid = false;
             }
@@ -228,8 +245,12 @@
           };
           var currentURL = window.location.origin;
           $.post(currentURL + "/api/friends/", userData, function(data) {
-            alert("Working...");
+            $("#matchName").text(data.name);
+            $("#matchImage").attr("src", data.photo);
+            $("#resultsModal").modal("toggle");
           });
+        } else {
+          alert("Please fill out all fields before submitting!");
         }
       });
     </script>
